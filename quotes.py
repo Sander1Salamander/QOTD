@@ -1,5 +1,6 @@
 import requests
 import os
+import datetime
 
 # Get webhook URL from environment variable
 WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
@@ -16,8 +17,13 @@ try:
 except Exception as e:
     raise RuntimeError(f"Failed to fetch quote: {e}")
 
+start = datetime.date(2025, 12, 7)
+today = datetime.date.today()
+
+day = (today - start).days
+
 # Send to Discord
-payload = {"content": f"# QOTD\n{quote}"}
+payload = {"content": f"# QOTD #{day}\n{quote}"}
 result = requests.post(WEBHOOK_URL, json=payload)
 
 if result.status_code == 204:
